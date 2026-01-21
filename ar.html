@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AR — Expo IA & Industria 5.0</title>
+
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+  <style>
+    html,body{ margin:0; height:100%; background:#000; font-family: system-ui, -apple-system, Segoe UI, Roboto; }
+    .ui{ position:fixed; left:12px; right:12px; top:12px; display:flex; gap:10px; flex-wrap:wrap;
+         z-index:9999; align-items:flex-start; justify-content:space-between; pointer-events:none; }
+    .card{ pointer-events:auto; max-width:520px; background: rgba(10,12,20,.62); color: rgba(255,255,255,.92);
+           border:1px solid rgba(255,255,255,.16); border-radius:16px; padding:10px 12px; backdrop-filter: blur(10px); }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .btn{ pointer-events:auto; cursor:pointer; padding:10px 12px; border-radius:14px;
+          border:1px solid rgba(94,231,255,.35); background: rgba(94,231,255,.14); color:#fff; text-decoration:none;
+          display:inline-flex; align-items:center; justify-content:center; gap:8px; font-size:13px; user-select:none; }
+    .btn.ghost{ border:1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); }
+    .muted{ color: rgba(255,255,255,.65); font-size:12px; margin-top:4px; line-height:1.35; }
+    .tap{ position:fixed; inset:0; display:grid; place-items:center; background: rgba(0,0,0,.55); z-index:9998; }
+    .tap .box{ width:min(520px, calc(100% - 28px)); border-radius:18px; border:1px solid rgba(255,255,255,.18);
+               background: rgba(10,12,20,.82); color: rgba(255,255,255,.92); padding:14px; text-align:center;
+               backdrop-filter: blur(10px); }
+    @media (max-width:520px){ .ui{ left:10px; right:10px; top:10px; } .card{ max-width:none; width:100%; } }
+  </style>
+</head>
+
+<body>
+  <div class="ui">
+    <div class="card">
+      <div style="font-weight:900;font-size:14px">AR • Expo IA & Industria 5.0</div>
+      <div class="muted">
+        1) Toca <b>Iniciar</b><br/>
+        2) Apunta la cámara a <b>expo_target.jpg</b><br/>
+        3) Verás el video sobre el target
+      </div>
+      <div class="row">
+        <a class="btn ghost" id="fallback" href="./s.html?token=demo">Ver contenido sin AR</a>
+        <a class="btn ghost" href="./index.html">Volver al mapa</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="tap" id="tapLayer">
+    <div class="box">
+      <div style="font-weight:900;font-size:16px">Iniciar AR</div>
+      <div class="muted" style="margin-top:8px">
+        En móviles el video necesita un tap para iniciar (políticas de autoplay).
+      </div>
+      <div class="row" style="justify-content:center; margin-top:12px">
+        <button class="btn" id="startBtn">Iniciar</button>
+        <a class="btn ghost" href="./index.html">Cancelar</a>
+      </div>
+    </div>
+  </div>
+
+  <a-scene
+    mindar-image="imageTargetSrc: ./assets/targets/expo_target.mind; autoStart: false;"
+    color-space="sRGB"
+    renderer="colorManagement: true, physicallyCorrectLights: true"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: true">
+
+    <a-assets>
+      <video id="standVideo"
+             src="./assets/video/demo.mp4"
+             preload="auto"
+             loop
+             muted
+             playsinline
+             webkit-playsinline
+             crossorigin="anonymous"></video>
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-plane position="0 0 0"
+               width="1.35" height="0.76"
+               material="shader: flat; src: #standVideo; transparent: true; opacity: 1"></a-plane>
+
+      <a-plane position="0 0 -0.01"
+               width="1.43" height="0.84"
+               color="#2dd4bf" opacity="0.15"></a-plane>
+
+      <a-text value="Demo Stand — Video"
+              position="-0.65 0.48 0.01"
+              width="2.4"
+              color="#FFFFFF"></a-text>
+    </a-entity>
+  </a-scene>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token') || 'demo';
+    document.getElementById('fallback').href = './s.html?token=' + encodeURIComponent(token);
+
+    const scene = document.querySelector('a-scene');
+    const mindar = scene.components['mindar-image'];
+    const tapLayer = document.getElementById('tapLayer');
+    const startBtn = document.getElementById('startBtn');
+    const vid = document.getElementById('standVideo');
+
+    async function startAR(){
+      tapLayer.style.display = 'none';
+      await mindar.start();
+      try { await vid.play(); } catch (e) { console.warn('Video play blocked:', e); }
+      scene.addEventListener('targetFound', async () => { try { await vid.play(); } catch(e){} });
+    }
+    startBtn.addEventListener('click', startAR);
+  </script>
+</body>
+</html>

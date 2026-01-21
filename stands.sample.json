@@ -1,0 +1,80 @@
+[
+  {
+    "id": "405",
+    "name": "Industria Mexicana (Demo)",
+    "category": "Smart Factory",
+    "zone": "Centro",
+    "bounds": [
+      735,
+      640,
+      1240,
+      905
+    ],
+    "description": "Smart Factory • Automatización • Integración OT/IT • Industria 5.0 centrada en humanos."
+  },
+  {
+    "id": "705",
+    "name": "Bimbo (Demo)",
+    "category": "Smart Supply Chain",
+    "zone": "Derecha",
+    "bounds": [
+      1315,
+      700,
+      1460,
+      930
+    ],
+    "description": "Cadena de suministro inteligente, trazabilidad, analítica y sostenibilidad."
+  },
+  {
+    "id": "415",
+    "name": "BBVA (Demo)",
+    "category": "AI & Analytics",
+    "zone": "Centro",
+    "bounds": [
+      710,
+      545,
+      835,
+      650
+    ],
+    "description": "IA aplicada, analítica avanzada y experiencias de datos."
+  },
+  {
+    "id": "723",
+    "name": "Activaciones (Demo)",
+    "category": "AR/VR & Experience",
+    "zone": "Arriba",
+    "bounds": [
+      1185,
+      380,
+      1325,
+      510
+    ],
+    "description": "Zona de activaciones: experiencias inmersivas, demos y retos."
+  },
+  {
+    "id": "TALLER",
+    "name": "Taller",
+    "category": "Learning & Skills",
+    "zone": "Arriba derecha",
+    "bounds": [
+      1205,
+      170,
+      1505,
+      350
+    ],
+    "description": "Workshops, hands-on labs y certificaciones."
+  },
+  {
+    "id": "CONF",
+    "name": "Conferencias",
+    "category": "Conferences",
+    "zone": "Izquierda",
+    "bounds": [
+      390,
+      140,
+      645,
+      530
+    ],
+    "description": "Auditorio de conferencias y keynotes sobre industria 5.0."
+  }
+]

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Expo Industry 5.0 — Mapa Interactivo</title>
 
   <!-- Leaflet -->
@@ -15,7 +15,8 @@
 
 <body>
   <div class="app">
-    <aside class="sidebar">
+    <!-- Sidebar (panel) -->
+    <aside class="sidebar" id="sidebar" aria-label="Panel">
       <div class="brand">
         <div class="logo">E5</div>
         <div class="brandText">
@@ -28,7 +29,7 @@
         <div class="row">
           <label class="field">
             <span>Buscar stand</span>
-            <input id="q" type="search" placeholder="Ej. 405, Coca-Cola, IA, IoT..." autocomplete="off" />
+            <input id="q" type="search" placeholder="Ej. A01, Robótica, IA, IoT..." autocomplete="off" />
           </label>
         </div>
 
@@ -42,19 +43,19 @@
         </div>
 
         <div class="chips" id="quickCats"></div>
-
         <div class="stats" id="stats"></div>
 
         <div class="listHead">
           <div>Stands</div>
           <button class="btn ghost" id="fitBtn" title="Ajustar vista">Ajustar</button>
         </div>
+
         <div class="list" id="list"></div>
       </div>
 
       <div class="footer">
         <div class="hint">
-          <b>Tip:</b> Activa <span class="pill">Modo Admin</span> para capturar coordenadas y crear stands rápido.
+          <b>Tip:</b> Activa <span class="pill">Modo Admin</span> para capturar rectángulos rápido.
         </div>
         <div class="footerActions">
           <button class="btn" id="adminBtn">Modo Admin: OFF</button>
@@ -63,15 +64,17 @@
       </div>
     </aside>
 
+    <!-- Main -->
     <main class="main">
       <header class="topbar">
         <div class="topLeft">
           <span class="badge">WEB</span>
-          <span class="muted">Indoor • Plano en imagen • Leaflet CRS.Simple</span>
+          <span class="muted">Indoor • Plano PNG • Leaflet CRS.Simple</span>
         </div>
+
         <div class="topRight">
-          <button class="btn ghost" id="menuBtn" title="Abrir panel">Panel</button>
-          <a class="btn ghost" href="./ar.html" target="_blank" rel="noreferrer">Vista AR (demo)</a>
+          <button class="btn ghost" id="menuBtn" title="Abrir/Cerrar panel">Panel</button>
+          <a class="btn ghost" href="./ar.html" target="_blank" rel="noreferrer">AR (demo)</a>
         </div>
       </header>
 
@@ -98,7 +101,8 @@
             </div>
             <div class="adminRow">
               <div class="adminLabel">Snippet JSON:</div>
-              <textarea id="jsonSnippet" spellcheck="false" placeholder='{"id":"405","name":"Coca-Cola","category":"Smart Factory","bounds":[x1,y1,x2,y2]}'></textarea>
+              <textarea id="jsonSnippet" spellcheck="false"
+                placeholder='{"id":"A01","name":"Robótica","category":"Robótica & Cobots","bounds":[x1,y1,x2,y2],"token":"A01"}'></textarea>
             </div>
             <div class="adminRow">
               <button class="btn" id="copyBtn">Copiar snippet</button>
@@ -112,7 +116,7 @@
 
   <!-- Modal -->
   <div class="modal" id="modal" hidden>
-    <div class="modalCard">
+    <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="mTitle">
       <div class="modalHead">
         <div class="modalTitle" id="mTitle">Stand</div>
         <button class="iconBtn" id="closeModal" aria-label="Cerrar">✕</button>
@@ -134,11 +138,9 @@
         </div>
 
         <div class="desc" id="mDesc"></div>
-
         <div class="small muted" id="mNote"></div>
       </div>
     </div>
   </div>
-
 </body>
 </html>

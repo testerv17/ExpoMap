@@ -2,18 +2,19 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Expo IA & Industria 5.0 — Mapa</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Expo IA & Industria 5.0 — Mapa Interactivo</title>
 
+  <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <link rel="stylesheet" href="./styles.css" />
-  <script defer src="./app.js"></script>
 </head>
 
 <body>
   <div class="app">
+    <!-- TOP BAR -->
     <header class="topbar">
       <div class="brand">
         <div class="logo">E5</div>
@@ -22,52 +23,61 @@
           <div class="subtitle">Mapa indoor • Expositores • AR</div>
         </div>
       </div>
-      <div class="topRight">
-        <button class="btn gold" id="sheetBtn">Expositores</button>
-        <a class="btn green" id="arBtn" href="./ar.html" rel="noreferrer">AR</a>
+
+      <div class="topActions">
+        <button id="sheetBtn" class="pill gold">Expositores</button>
+        <a class="pill green" href="./ar.html?token=demo">AR</a>
       </div>
     </header>
 
+    <!-- MAP -->
     <main class="mapWrap">
-      <div id="map"></div>
-      <div class="toast" id="toast" hidden></div>
+      <div id="map" class="map"></div>
+
+      <div id="toast" class="toast" hidden></div>
+
+      <div class="miniFab">
+        <button id="fitBtn" class="fab" title="Ajustar plano">⤢</button>
+      </div>
     </main>
 
-    <section class="sheet" id="sheet">
+    <!-- BOTTOM SHEET -->
+    <section id="sheet" class="sheet" aria-label="Expositores">
       <div class="sheetHandle">
-        <div class="pills">
-          <span class="pill gold" id="pillCount">60 stands</span>
-          <span class="pill green">Industria 5.0</span>
+        <div class="sheetPills">
+          <div class="pill soft" id="pillCount">60 stands</div>
+          <div class="pill soft">Industria 5.0</div>
         </div>
-        <button class="iconBtn" id="sheetClose" aria-label="Cerrar">✕</button>
+        <button id="sheetClose" class="sheetClose" aria-label="Cerrar">✕</button>
       </div>
 
       <div class="sheetBody">
-        <label class="field">
-          <span>Buscar expositor / stand</span>
-          <input id="q" type="search" placeholder="Ej. A01, AWS, Siemens, IoT..." autocomplete="off" />
-        </label>
+        <label class="label">Buscar expositor / stand</label>
+        <input id="q" class="input" placeholder="Ej. A01, AWS, Siemens, IoT..." />
 
-        <label class="field">
-          <span>Categoría</span>
-          <select id="cat">
-            <option value="all">Todas</option>
-          </select>
-        </label>
-
-        <div class="stats" id="stats"></div>
-        <div class="list" id="list"></div>
-
-        <div style="display:flex; gap:10px; flex-wrap:wrap">
-          <button class="btn" id="fitBtn">Ajustar plano</button>
-          <button class="btn ghost" id="demoBtn">Ir a A01</button>
+        <div class="row2">
+          <div>
+            <label class="label">Categoría</label>
+            <select id="cat" class="select">
+              <option value="all">Todas</option>
+            </select>
+          </div>
+          <div class="rightBtns">
+            <button id="demoBtn" class="btn ghost">Ir a A01</button>
+          </div>
         </div>
 
-        <div style="font-size:12px;color:#5b6473;line-height:1.35">
-          Tip: toca un expositor para ir directo a su stand. En AR escanea tu target para ver tu video.
+        <div class="stats" id="stats">—</div>
+
+        <div id="list" class="list"></div>
+
+        <div class="hint">
+          Tip: toca un expositor para ir directo a su stand. Usa “AR” para escanear tu target.
         </div>
       </div>
     </section>
   </div>
+
+  <script src="./app.js"></script>
 </body>
 </html>

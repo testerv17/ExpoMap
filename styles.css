@@ -66,7 +66,7 @@ body{
   color: var(--text);
   text-decoration:none;
   font-size:13px;
-  font-weight:700;
+  font-weight:800;
   box-shadow: 0 10px 24px rgba(0,0,0,.18);
   user-select:none;
 }
@@ -80,7 +80,7 @@ body{
 }
 .pill.soft{
   box-shadow:none;
-  font-weight:800;
+  font-weight:900;
   background: rgba(255,255,255,.08);
 }
 
@@ -103,7 +103,7 @@ body{
   border-radius: 999px;
   backdrop-filter: blur(12px);
   color: rgba(255,255,255,.92);
-  font-weight:800;
+  font-weight:900;
   box-shadow: var(--shadow);
   z-index:600;
 }
@@ -168,7 +168,7 @@ body{
   max-height: calc(560px - 70px);
 }
 
-.label{ display:block; font-size:12px; color: var(--muted); margin: 10px 2px 6px; font-weight:800; }
+.label{ display:block; font-size:12px; color: var(--muted); margin: 10px 2px 6px; font-weight:900; }
 
 .input,.select{
   width:100%;
@@ -204,12 +204,13 @@ body{
 
 .stats{
   margin: 10px 2px;
-  color: rgba(255,255,255,.70);
-  font-weight:800;
+  color: rgba(255,255,255,.72);
+  font-weight:900;
   font-size:12px;
 }
 
 .list{ display:flex; flex-direction:column; gap:10px; padding-bottom: 12px; }
+
 .item{
   border-radius: 18px;
   border: 1px solid rgba(255,255,255,.14);
@@ -217,9 +218,11 @@ body{
   padding: 12px;
   box-shadow: 0 10px 24px rgba(0,0,0,.18);
 }
+
 .itemTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
 .itemName{ font-weight:900; font-size:14px; }
-.itemCat{ color: rgba(255,255,255,.70); font-size:12px; margin-top:4px; font-weight:800; }
+.itemCat{ color: rgba(255,255,255,.72); font-size:12px; margin-top:4px; font-weight:900; }
+
 .kpill{
   border-radius: 999px;
   padding: 8px 10px;
@@ -229,17 +232,36 @@ body{
   color: rgba(255,255,255,.95);
 }
 
+.btnSmall{
+  border-radius: 999px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.10);
+  color: rgba(255,255,255,.95);
+  font-weight:900;
+  font-size:12px;
+  text-decoration:none;
+}
+.btnSmall.goBtn{
+  border-color: rgba(246,197,74,.50);
+  background: rgba(246,197,74,.16);
+}
+.btnSmall.arBtn{
+  border-color: rgba(18,199,122,.55);
+  background: rgba(18,199,122,.16);
+}
+
 .hint{
   margin-top: 10px;
   font-size:12px;
-  color: rgba(255,255,255,.70);
+  color: rgba(255,255,255,.72);
   padding: 10px 12px;
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.06);
 }
 
-/* Leaflet: make controls match theme */
+/* Leaflet theme */
 .leaflet-control-zoom a{
   background: rgba(0,0,0,.45) !important;
   color: #fff !important;
@@ -248,7 +270,7 @@ body{
 }
 .leaflet-control-zoom{ box-shadow: var(--shadow) !important; border-radius: 14px; overflow:hidden; }
 
-/* iPhone notch safe areas */
+/* Safe areas */
 @supports(padding: env(safe-area-inset-top)){
   .topbar{
     padding-top: calc(10px + env(safe-area-inset-top));
@@ -260,7 +282,7 @@ body{
   .sheet{ padding-bottom: env(safe-area-inset-bottom); }
 }
 
-/* Smaller phones */
+/* Small phones */
 @media (max-width: 420px){
   .title{ font-size:14px; }
   .pill{ padding: 10px 12px; }

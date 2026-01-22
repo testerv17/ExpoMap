@@ -1,9 +1,3 @@
-/* Expo IA & Industria 5.0 — Mobile Web 2026
-   - Mapa indoor (Leaflet CRS.Simple) con plano.png
-   - Lista expositores: seleccionar -> zoom al stand (bounds correctos)
-   - Totalmente responsive (móvil primero)
-*/
-
 (() => {
   const els = {
     sheet: document.getElementById("sheet"),
@@ -29,25 +23,27 @@
     activeId: null,
   };
 
-  function showToast(msg, ms=1700){
+  const absUrl = (rel) => new URL(rel, window.location.href).toString();
+
+  const escapeHtml = (s) =>
+    String(s).replace(/[&<>"']/g, (m) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+    }[m]));
+
+  function showToast(msg, ms=2400){
     els.toast.textContent = msg;
     els.toast.hidden = false;
     clearTimeout(showToast._t);
     showToast._t = setTimeout(() => (els.toast.hidden = true), ms);
   }
 
-  function openSheet(){ els.sheet.classList.add("open"); }
-  function closeSheet(){ els.sheet.classList.remove("open"); }
-
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, m => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
-    }[m]));
-  }
+  const openSheet  = () => els.sheet.classList.add("open");
+  const closeSheet = () => els.sheet.classList.remove("open");
 
   async function loadConfig(){
-    const res = await fetch("./stands.json?v=" + Date.now());
-    if(!res.ok) throw new Error("No pude cargar stands.json");
+    const url = absUrl("./stands.json") + "?v=" + Date.now();
+    const res = await fetch(url, { cache:"no-store" });
+    if(!res.ok) throw new Error(`stands.json HTTP ${res.status}`);
     return await res.json();
   }
 
@@ -70,10 +66,9 @@
     const bounds = [[0,0],[h,w]];
     STATE.img.bounds = bounds;
 
-    if(STATE.overlay){
-      STATE.map.removeLayer(STATE.overlay);
-    }
-    STATE.overlay = L.imageOverlay(url, bounds).addTo(STATE.map);
+    if(STATE.overlay) STATE.map.removeLayer(STATE.overlay);
+
+    STATE.overlay = L.imageOverlay(absUrl(url), bounds, { opacity:1 }).addTo(STATE.map);
     STATE.map.fitBounds(bounds);
   }
 
@@ -86,11 +81,11 @@
 
   function styleFor(active=false){
     return {
-      color: active ? "#12c77a" : "#f6c54a",
+      color: active ? "#12C77A" : "#F6C54A",
       weight: active ? 3 : 2,
       opacity: 0.95,
-      fillColor: active ? "#12c77a" : "#f6c54a",
-      fillOpacity: active ? 0.20 : 0.10,
+      fillColor: active ? "#12C77A" : "#F6C54A",
+      fillOpacity: active ? 0.24 : 0.10,
     };
   }
 
@@ -98,6 +93,7 @@
     clearStandLayers();
 
     list.forEach(s => {
+      // bounds = [x1,y1,x2,y2] en pixeles sobre la imagen
       const [x1,y1,x2,y2] = s.bounds;
       const b = [[y1,x1],[y2,x2]];
       const rect = L.rectangle(b, styleFor(false)).addTo(STATE.map);
@@ -118,11 +114,11 @@
 
     const [x1,y1,x2,y2] = s.bounds;
     const b = [[y1,x1],[y2,x2]];
-    STATE.map.fitBounds(b, { padding:[38,38], maxZoom: 0 });
+    STATE.map.fitBounds(b, { padding:[44,44], maxZoom: 0 });
 
     showToast(`📍 ${s.id} • ${s.category}`);
 
-    // In mobile, close sheet after choosing from list
+    // en móvil cerramos el sheet al elegir desde la lista
     if(!fromMap && window.matchMedia("(max-width: 980px)").matches){
       closeSheet();
     }
@@ -178,6 +174,8 @@
     STATE.filtered = list;
     renderList(list);
     drawStands(list);
+
+    els.pillCount.textContent = `${STATE.stands.length} stands`;
   }
 
   function wireUI(){
@@ -197,44 +195,48 @@
       focusStand("A01", false);
     });
 
+    // si tocas el mapa en móvil, cerramos el sheet para navegar cómodo
     STATE.map.on("click", () => {
       if(window.matchMedia("(max-width: 980px)").matches){
         closeSheet();
       }
     });
 
-    // deep-link ?stand=A01
+    // deep link: index.html?stand=A01
     const params = new URLSearchParams(location.search);
     const stand = params.get("stand");
     if(stand){
-      setTimeout(() => focusStand(stand, false), 450);
+      setTimeout(() => focusStand(stand, false), 600);
     }
   }
 
   async function init(){
+    if(typeof window.L === "undefined"){
+      showToast("⚠️ Leaflet no cargó. Revisa tu conexión.", 4500);
+      return;
+    }
+
     createMap();
 
     try{
       const cfg = await loadConfig();
       STATE.img.url = cfg.image?.url || "./assets/plano.png";
-      STATE.img.w = cfg.image?.width || 1536;
-      STATE.img.h = cfg.image?.height || 1024;
-      STATE.stands = cfg.stands || [];
+      STATE.img.w   = cfg.image?.width || 1536;
+      STATE.img.h   = cfg.image?.height || 1024;
+      STATE.stands  = cfg.stands || [];
     }catch(e){
       console.error(e);
-      showToast("⚠️ No se pudo cargar stands.json");
+      showToast("⚠️ No se pudo cargar stands.json. Revisa el deploy en GitHub Pages.", 5000);
       STATE.stands = [];
     }
-
-    els.pillCount.textContent = `${STATE.stands.length || 0} stands`;
 
     setFloorplan();
     initCategoryUI();
     applyFilters();
     wireUI();
 
-    showToast("Listo. Abre Expositores y elige un stand.", 2200);
+    showToast("Listo. Abre Expositores y elige un stand.", 2600);
   }
 
-  init();
+  window.addEventListener("load", init, { once:true });
 })();

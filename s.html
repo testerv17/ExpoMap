@@ -3,18 +3,36 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Stand — Acceso por QR</title>
+  <title>Stand — Contenido</title>
   <link rel="stylesheet" href="./styles.css" />
   <style>
-    .page{ min-height:100%; display:grid; place-items:center; padding:18px; }
-    .card{ width:min(860px,100%); border:1px solid rgba(255,255,255,.16); border-radius:22px;
-           background: rgba(10,12,20,.92); box-shadow: var(--shadow); overflow:hidden; }
-    .head{ display:flex; justify-content:space-between; align-items:center; padding:14px; border-bottom:1px solid rgba(255,255,255,.12); }
+    .page{ min-height:100%; display:grid; place-items:center; padding:14px; overflow:auto; }
+    .card{
+      width:min(980px,100%);
+      border:1px solid rgba(16,18,24,.10);
+      border-radius: 22px;
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .head{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:14px; border-bottom:1px solid rgba(16,18,24,.08);
+    }
+    .h1{ font-weight:900; font-size:16px; }
+    .sub{ color: var(--muted); font-size:12px; margin-top:4px; }
     .body{ padding:14px; }
     .grid{ display:grid; grid-template-columns: 1.2fr .8fr; gap:14px; }
-    .box{ border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:12px; background: rgba(255,255,255,.03); }
-    .hero{ height:240px; border-radius:18px; border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.03);
-           display:grid; place-items:center; color: var(--muted); }
+    .box{ border:1px solid rgba(16,18,24,.10); border-radius:18px; padding:12px; background: rgba(255,255,255,.82); }
+    .hero{
+      border:1px solid rgba(16,18,24,.10);
+      border-radius: 18px;
+      background: rgba(255,255,255,.84);
+      overflow:hidden;
+      box-shadow: 0 10px 20px rgba(16,18,24,.08);
+    }
+    video{ width:100%; height:auto; display:block; background:#000; }
     @media (max-width: 860px){ .grid{ grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -23,31 +41,43 @@
     <div class="card">
       <div class="head">
         <div>
-          <div style="font-weight:900;font-size:16px" id="title">Stand</div>
-          <div class="muted" id="meta">Acceso por QR</div>
+          <div class="h1" id="title">Stand</div>
+          <div class="sub" id="meta">Contenido interactivo</div>
         </div>
-        <a class="btn ghost" href="./index.html">← Volver al mapa</a>
+        <a class="btn" href="./index.html">← Mapa</a>
       </div>
+
       <div class="body">
         <div class="grid">
           <div>
-            <div class="hero" id="hero">Video / Galería / Contenido interactivo (demo)</div>
-            <div style="margin-top:12px" class="box">
-              <div style="font-weight:800;margin-bottom:6px">Acciones</div>
-              <div style="display:flex;gap:10px;flex-wrap:wrap">
-                <a class="btn" id="arLink" href="./ar.html">Ver AR</a>
-                <a class="btn ghost" id="pdfLink" href="#" onclick="alert('Aquí conectas un PDF/brochure real');return false;">Descargar brochure</a>
-                <a class="btn ghost" id="leadLink" href="#" onclick="alert('Aquí va un formulario de lead/contacto');return false;">Dejar contacto</a>
-              </div>
+            <div class="hero">
+              <video id="vid" controls playsinline muted>
+                <source src="./assets/video/demo.mp4" type="video/mp4" />
+              </video>
+            </div>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
+              <a class="btn green" id="arLink" href="./ar.html">Ver AR</a>
+              <a class="btn gold" id="goMap" href="./index.html">Ver stand en mapa</a>
             </div>
           </div>
+
           <div class="box">
             <div style="font-weight:900">Token</div>
-            <div class="muted" style="margin-top:6px" id="tokenBox">—</div>
-            <div style="height:10px"></div>
-            <div style="font-weight:900">Siguiente paso</div>
-            <div class="muted" style="margin-top:6px">
-              Conectar backend (Supabase) para resolver token → stand → assets (video/imagenes/modelos).
+            <div class="sub" style="margin-top:6px" id="tokenBox">—</div>
+
+            <div style="height:12px"></div>
+            <div style="font-weight:900">Video por stand (opcional)</div>
+            <div class="sub" style="margin-top:6px; line-height:1.35">
+              Si agregas un video con el nombre del stand, se usará automáticamente:<br/>
+              <code>assets/video/A01.mp4</code>, <code>assets/video/B07.mp4</code>...<br/>
+              Si no existe, se reproduce <code>demo.mp4</code>.
+            </div>
+
+            <div style="height:12px"></div>
+            <div style="font-weight:900">AR</div>
+            <div class="sub" style="margin-top:6px; line-height:1.35">
+              Para escanear, abre AR y apunta al target compilado (<code>.mind</code>).
             </div>
           </div>
         </div>
@@ -58,10 +88,21 @@
 <script>
   const params = new URLSearchParams(location.search);
   const token = params.get('token') || 'demo';
+
+  document.getElementById('title').textContent = `Stand ${token}`;
+  document.getElementById('meta').textContent = `Contenido • token=${token}`;
   document.getElementById('tokenBox').textContent = token;
-  document.getElementById('title').textContent = 'Stand (demo)';
-  document.getElementById('meta').textContent = 'Entrada por QR • token=' + token;
-  document.getElementById('arLink').href = './ar.html?token=' + encodeURIComponent(token);
+
+  const v = document.getElementById('vid');
+  const tokenUrl = `./assets/video/${token}.mp4`;
+
+  const test = document.createElement('video');
+  test.src = tokenUrl + "?v=" + Date.now();
+  test.onloadeddata = () => { v.src = tokenUrl; };
+  test.onerror = () => { v.src = "./assets/video/demo.mp4"; };
+
+  document.getElementById('arLink').href = `./ar.html?token=${encodeURIComponent(token)}`;
+  document.getElementById('goMap').href = `./index.html?stand=${encodeURIComponent(token)}`;
 </script>
 </body>
 </html>

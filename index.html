@@ -2,10 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Expo Industry 5.0 — Mapa Interactivo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Expo IA & Industria 5.0 — Mapa</title>
 
-  <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -15,132 +14,60 @@
 
 <body>
   <div class="app">
-    <!-- Sidebar (panel) -->
-    <aside class="sidebar" id="sidebar" aria-label="Panel">
+    <header class="topbar">
       <div class="brand">
         <div class="logo">E5</div>
         <div class="brandText">
-          <div class="title">Expo Industry 5.0</div>
-          <div class="subtitle">Mapa interactivo + QR por stand</div>
+          <div class="title">Expo IA & Industria 5.0</div>
+          <div class="subtitle">Mapa indoor • Expositores • AR</div>
         </div>
       </div>
-
-      <div class="panel">
-        <div class="row">
-          <label class="field">
-            <span>Buscar stand</span>
-            <input id="q" type="search" placeholder="Ej. A01, Robótica, IA, IoT..." autocomplete="off" />
-          </label>
-        </div>
-
-        <div class="row">
-          <label class="field">
-            <span>Categoría</span>
-            <select id="cat">
-              <option value="all">Todas</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="chips" id="quickCats"></div>
-        <div class="stats" id="stats"></div>
-
-        <div class="listHead">
-          <div>Stands</div>
-          <button class="btn ghost" id="fitBtn" title="Ajustar vista">Ajustar</button>
-        </div>
-
-        <div class="list" id="list"></div>
+      <div class="topRight">
+        <button class="btn gold" id="sheetBtn">Expositores</button>
+        <a class="btn green" id="arBtn" href="./ar.html" rel="noreferrer">AR</a>
       </div>
+    </header>
 
-      <div class="footer">
-        <div class="hint">
-          <b>Tip:</b> Activa <span class="pill">Modo Admin</span> para capturar rectángulos rápido.
-        </div>
-        <div class="footerActions">
-          <button class="btn" id="adminBtn">Modo Admin: OFF</button>
-          <button class="btn ghost" id="exportBtn" title="Exportar stands">Exportar JSON</button>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Main -->
-    <main class="main">
-      <header class="topbar">
-        <div class="topLeft">
-          <span class="badge">WEB</span>
-          <span class="muted">Indoor • Plano PNG • Leaflet CRS.Simple</span>
-        </div>
-
-        <div class="topRight">
-          <button class="btn ghost" id="menuBtn" title="Abrir/Cerrar panel">Panel</button>
-          <a class="btn ghost" href="./ar.html" target="_blank" rel="noreferrer">AR (demo)</a>
-        </div>
-      </header>
-
-      <section class="mapWrap">
-        <div id="map"></div>
-
-        <div class="toast" id="toast" hidden></div>
-
-        <div class="adminPanel" id="adminPanel" hidden>
-          <div class="adminTitle">Modo Admin (captura coordenadas)</div>
-          <div class="adminBody">
-            <div class="adminRow">
-              <div class="adminLabel">Último clic (x, y):</div>
-              <code id="lastXY">—</code>
-            </div>
-            <div class="adminRow">
-              <div class="adminLabel">Rectángulo (x1,y1,x2,y2):</div>
-              <code id="lastRect">—</code>
-            </div>
-            <div class="adminRow">
-              <button class="btn" id="rectStartBtn">1) Marcar esquina 1</button>
-              <button class="btn" id="rectEndBtn">2) Marcar esquina 2</button>
-              <button class="btn ghost" id="rectClearBtn">Limpiar</button>
-            </div>
-            <div class="adminRow">
-              <div class="adminLabel">Snippet JSON:</div>
-              <textarea id="jsonSnippet" spellcheck="false"
-                placeholder='{"id":"A01","name":"Robótica","category":"Robótica & Cobots","bounds":[x1,y1,x2,y2],"token":"A01"}'></textarea>
-            </div>
-            <div class="adminRow">
-              <button class="btn" id="copyBtn">Copiar snippet</button>
-              <button class="btn ghost" id="helpBtn">Guía rápida</button>
-            </div>
-          </div>
-        </div>
-      </section>
+    <main class="mapWrap">
+      <div id="map"></div>
+      <div class="toast" id="toast" hidden></div>
     </main>
-  </div>
 
-  <!-- Modal -->
-  <div class="modal" id="modal" hidden>
-    <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="mTitle">
-      <div class="modalHead">
-        <div class="modalTitle" id="mTitle">Stand</div>
-        <button class="iconBtn" id="closeModal" aria-label="Cerrar">✕</button>
+    <section class="sheet" id="sheet">
+      <div class="sheetHandle">
+        <div class="pills">
+          <span class="pill gold" id="pillCount">60 stands</span>
+          <span class="pill green">Industria 5.0</span>
+        </div>
+        <button class="iconBtn" id="sheetClose" aria-label="Cerrar">✕</button>
       </div>
 
-      <div class="modalMeta" id="mMeta"></div>
+      <div class="sheetBody">
+        <label class="field">
+          <span>Buscar expositor / stand</span>
+          <input id="q" type="search" placeholder="Ej. A01, AWS, Siemens, IoT..." autocomplete="off" />
+        </label>
 
-      <div class="modalContent">
-        <div class="media">
-          <div class="mediaPlaceholder" id="mMedia">
-            <div class="mediaHint">Aquí va: video / galería / brochure / AR</div>
-          </div>
+        <label class="field">
+          <span>Categoría</span>
+          <select id="cat">
+            <option value="all">Todas</option>
+          </select>
+        </label>
+
+        <div class="stats" id="stats"></div>
+        <div class="list" id="list"></div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <button class="btn" id="fitBtn">Ajustar plano</button>
+          <button class="btn ghost" id="demoBtn">Ir a A01</button>
         </div>
 
-        <div class="actions">
-          <a class="btn" id="qrBtn" href="#" target="_blank" rel="noreferrer">Abrir por QR</a>
-          <a class="btn ghost" id="arBtn" href="#" target="_blank" rel="noreferrer">Ver AR</a>
-          <button class="btn ghost" id="favBtn">☆ Favorito</button>
+        <div style="font-size:12px;color:#5b6473;line-height:1.35">
+          Tip: toca un expositor para ir directo a su stand. En AR escanea tu target para ver tu video.
         </div>
-
-        <div class="desc" id="mDesc"></div>
-        <div class="small muted" id="mNote"></div>
       </div>
-    </div>
+    </section>
   </div>
 </body>
 </html>

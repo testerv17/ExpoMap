@@ -16,16 +16,20 @@
       overflow:hidden;
     }
 
-    /* Fullscreen scene */
+    /* El canvas de A-Frame debe ser transparente para que se vea la cámara "natural" */
     a-scene{
       position:fixed !important;
       inset:0 !important;
       width:100vw !important;
       height:100vh !important;
       z-index:1;
+      background: transparent !important;
     }
 
-    /* Hide A-Frame VR button */
+    /* Evita overlays negros del navegador en algunos Android */
+    body::before{ content:""; position:fixed; inset:0; background:transparent; pointer-events:none; }
+
+    /* Oculta VR */
     .a-enter-vr, .a-enter-ar { display:none !important; }
 
     .hud{
@@ -41,7 +45,7 @@
     .card{
       pointer-events:auto;
       width:min(560px,100%);
-      background: rgba(0,0,0,.28);
+      background: rgba(0,0,0,.24);
       border:1px solid rgba(255,255,255,.14);
       border-radius: 18px;
       padding: 12px;
@@ -67,6 +71,7 @@
       align-items:center;
       justify-content:center;
       gap:8px;
+      font-weight:900;
     }
     .btn.green{ border-color: rgba(18,199,122,.55); background: rgba(18,199,122,.18); }
     .btn.gold{ border-color: rgba(246,197,74,.55); background: rgba(246,197,74,.16); }
@@ -79,7 +84,7 @@
     }
     .box{
       width:min(560px, calc(100% - 26px));
-      background: rgba(0,0,0,.30);
+      background: rgba(0,0,0,.26);
       border:1px solid rgba(255,255,255,.14);
       border-radius: 20px;
       padding: 14px;
@@ -112,7 +117,7 @@
         1) Toca <b>Iniciar</b> • 2) Apunta al <b>target</b> • 3) El video aparecerá encima
       </div>
       <div class="row">
-        <a class="btn" href="./index.html">← Mapa</a>
+        <a class="btn" id="backBtn" href="./index.html">← Mapa</a>
         <a class="btn gold" id="contentBtn" href="./s.html?token=demo">Contenido</a>
       </div>
     </div>
@@ -161,21 +166,19 @@
 
     <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
 
-    <!-- Target -->
     <a-entity mindar-image-target="targetIndex: 0">
-      <!-- Marco glow (verde + dorado) -->
-      <a-plane position="0 0 -0.02" width="1.92" height="1.18" color="#12C77A" opacity="0.13"></a-plane>
-      <a-plane position="0 0 -0.03" width="2.06" height="1.30" color="#F6C54A" opacity="0.10"></a-plane>
+      <!-- Glow verde + dorado -->
+      <a-plane position="0 0 -0.03" width="2.10" height="1.32" color="#12C77A" opacity="0.14"></a-plane>
+      <a-plane position="0 0 -0.04" width="2.24" height="1.44" color="#F6C54A" opacity="0.10"></a-plane>
 
-      <!-- Video -->
+      <!-- Video (flat shader = se ve mejor, sin sombras) -->
       <a-plane position="0 0 0"
-        width="1.75" height="0.98"
+        width="1.85" height="1.04"
         material="shader: flat; src: #v; transparent: true; opacity: 1"></a-plane>
 
-      <!-- Label -->
       <a-text value="Expo IA & Industria 5.0"
-        position="-0.92 0.72 0.01"
-        width="3.2"
+        position="-0.98 0.78 0.01"
+        width="3.4"
         color="#ffffff"></a-text>
     </a-entity>
   </a-scene>
@@ -183,16 +186,18 @@
   <script>
     (function(){
       const params = new URLSearchParams(location.search);
-      const token = params.get("token") || "demo";
+      const token = (params.get("token") || "demo").trim();
 
       const title = document.getElementById("title");
       const contentBtn = document.getElementById("contentBtn");
       const startBtn = document.getElementById("startBtn");
       const gate = document.getElementById("gate");
       const warn = document.getElementById("warn");
+      const backBtn = document.getElementById("backBtn");
 
       title.textContent = `AR • Stand ${token}`;
       contentBtn.href = `./s.html?token=${encodeURIComponent(token)}`;
+      backBtn.href = `./index.html?stand=${encodeURIComponent(token)}`;
 
       const sceneEl = document.getElementById("scene");
       const vid = document.getElementById("v");
@@ -216,4 +221,44 @@
       async function startAR(){
         warn.style.display = "none";
         try{
-          await sceneReady(
+          await sceneReady();
+
+          const sys = sceneEl.systems && sceneEl.systems["mindar-image-system"];
+          if(!sys) throw new Error("mindar-image-system no disponible");
+
+          // Video por stand si existe; si no demo.mp4
+          if(token !== "demo" && await exists(tokenVideo)){
+            vid.src = tokenVideo;
+          } else {
+            vid.src = "./assets/video/demo.mp4";
+          }
+
+          gate.style.display = "none";
+
+          await sys.start();
+
+          // Intentar play (muted + playsinline)
+          try { await vid.play(); } catch(e){}
+
+          // Reintenta al detectar target
+          sceneEl.addEventListener("targetFound", async () => {
+            try { await vid.play(); } catch(e){}
+          });
+
+          // Tap = desbloquea play en móviles
+          window.addEventListener("touchstart", async () => {
+            try { await vid.play(); } catch(e){}
+          }, { passive:true });
+
+        }catch(e){
+          console.error(e);
+          warn.style.display = "block";
+          gate.style.display = "grid";
+        }
+      }
+
+      startBtn.addEventListener("click", startAR);
+    })();
+  </script>
+</body>
+</html>

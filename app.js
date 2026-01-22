@@ -59,6 +59,10 @@
     });
     L.control.zoom({ position: "bottomright" }).addTo(map);
     STATE.map = map;
+
+    // Fix típico móvil: recalcular tamaño tras load/rotate
+    setTimeout(() => map.invalidateSize(true), 250);
+    window.addEventListener("resize", () => setTimeout(() => map.invalidateSize(true), 100));
   }
 
   function setFloorplan(){
@@ -69,7 +73,7 @@
     if(STATE.overlay) STATE.map.removeLayer(STATE.overlay);
 
     STATE.overlay = L.imageOverlay(absUrl(url), bounds, { opacity:1 }).addTo(STATE.map);
-    STATE.map.fitBounds(bounds);
+    STATE.map.fitBounds(bounds, { padding:[10,10] });
   }
 
   function clearStandLayers(){
@@ -85,7 +89,7 @@
       weight: active ? 3 : 2,
       opacity: 0.95,
       fillColor: active ? "#12C77A" : "#F6C54A",
-      fillOpacity: active ? 0.24 : 0.10,
+      fillOpacity: active ? 0.26 : 0.12,
     };
   }
 
@@ -93,7 +97,6 @@
     clearStandLayers();
 
     list.forEach(s => {
-      // bounds = [x1,y1,x2,y2] en pixeles sobre la imagen
       const [x1,y1,x2,y2] = s.bounds;
       const b = [[y1,x1],[y2,x2]];
       const rect = L.rectangle(b, styleFor(false)).addTo(STATE.map);
@@ -116,10 +119,10 @@
     const b = [[y1,x1],[y2,x2]];
     STATE.map.fitBounds(b, { padding:[44,44], maxZoom: 0 });
 
-    showToast(`📍 ${s.id} • ${s.category}`);
+    showToast(`📍 ${s.id} • ${s.name}`);
 
-    // en móvil cerramos el sheet al elegir desde la lista
     if(!fromMap && window.matchMedia("(max-width: 980px)").matches){
+      // en móvil, cerramos para dejar el mapa libre
       closeSheet();
     }
   }
@@ -132,21 +135,30 @@
   }
 
   function renderList(list){
-    els.list.innerHTML = list.map(s => `
-      <div class="item" data-id="${escapeHtml(s.id)}">
-        <div class="itemTop">
-          <div>
-            <div class="itemName">${escapeHtml(s.name)}</div>
-            <div class="itemCat">${escapeHtml(s.category)}</div>
+    els.list.innerHTML = list.map(s => {
+      const token = s.token || s.id;
+      return `
+        <div class="item" data-id="${escapeHtml(s.id)}">
+          <div class="itemTop">
+            <div>
+              <div class="itemName">${escapeHtml(s.name)}</div>
+              <div class="itemCat">${escapeHtml(s.category)}</div>
+            </div>
+            <div class="kpill">${escapeHtml(s.id)}</div>
           </div>
-          <div class="kpill">${escapeHtml(s.id)}</div>
-        </div>
-      </div>
-    `).join("");
 
-    els.list.querySelectorAll(".item").forEach(it => {
-      it.addEventListener("click", () => {
-        const id = it.getAttribute("data-id");
+          <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
+            <button class="btnSmall goBtn" data-go="${escapeHtml(s.id)}">Ir</button>
+            <a class="btnSmall arBtn" href="./ar.html?token=${encodeURIComponent(token)}">AR</a>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    els.list.querySelectorAll(".goBtn").forEach(b => {
+      b.addEventListener("click", (e) => {
+        e.preventDefault();
+        const id = b.getAttribute("data-go");
         focusStand(id, false);
       });
     });
@@ -165,9 +177,9 @@
     }
     if(q){
       list = list.filter(s =>
-        s.id.toLowerCase().includes(q) ||
-        s.name.toLowerCase().includes(q) ||
-        s.category.toLowerCase().includes(q)
+        (s.id || "").toLowerCase().includes(q) ||
+        (s.name || "").toLowerCase().includes(q) ||
+        (s.category || "").toLowerCase().includes(q)
       );
     }
 
@@ -186,7 +198,7 @@
     els.cat.addEventListener("change", applyFilters);
 
     els.fitBtn.addEventListener("click", () => {
-      if(STATE.img.bounds) STATE.map.fitBounds(STATE.img.bounds);
+      if(STATE.img.bounds) STATE.map.fitBounds(STATE.img.bounds, { padding:[10,10] });
       showToast("Vista ajustada al plano");
     });
 
@@ -195,18 +207,11 @@
       focusStand("A01", false);
     });
 
-    // si tocas el mapa en móvil, cerramos el sheet para navegar cómodo
-    STATE.map.on("click", () => {
-      if(window.matchMedia("(max-width: 980px)").matches){
-        closeSheet();
-      }
-    });
-
     // deep link: index.html?stand=A01
     const params = new URLSearchParams(location.search);
     const stand = params.get("stand");
     if(stand){
-      setTimeout(() => focusStand(stand, false), 600);
+      setTimeout(() => focusStand(stand, false), 700);
     }
   }
 
@@ -226,7 +231,7 @@
       STATE.stands  = cfg.stands || [];
     }catch(e){
       console.error(e);
-      showToast("⚠️ No se pudo cargar stands.json. Revisa el deploy en GitHub Pages.", 5000);
+      showToast("⚠️ No se pudo cargar stands.json (GitHub Pages).", 5000);
       STATE.stands = [];
     }
 
@@ -235,7 +240,12 @@
     applyFilters();
     wireUI();
 
-    showToast("Listo. Abre Expositores y elige un stand.", 2600);
+    // En móvil, por UX abrimos el sheet al inicio
+    if(window.matchMedia("(max-width: 700px)").matches){
+      openSheet();
+    }
+
+    showToast("Listo. Elige un stand o usa AR.", 2600);
   }
 
   window.addEventListener("load", init, { once:true });

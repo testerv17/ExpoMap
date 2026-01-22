@@ -1,80 +1,849 @@
-[
-  {
-    "id": "405",
-    "name": "Industria Mexicana (Demo)",
-    "category": "Smart Factory",
-    "zone": "Centro",
-    "bounds": [
-      735,
-      640,
-      1240,
-      905
-    ],
-    "description": "Smart Factory • Automatización • Integración OT/IT • Industria 5.0 centrada en humanos."
+{
+  "image": {
+    "width": 1536,
+    "height": 1024,
+    "url": "./assets/plano.png"
   },
-  {
-    "id": "705",
-    "name": "Bimbo (Demo)",
-    "category": "Smart Supply Chain",
-    "zone": "Derecha",
-    "bounds": [
-      1315,
-      700,
-      1460,
-      930
-    ],
-    "description": "Cadena de suministro inteligente, trazabilidad, analítica y sostenibilidad."
-  },
-  {
-    "id": "415",
-    "name": "BBVA (Demo)",
-    "category": "AI & Analytics",
-    "zone": "Centro",
-    "bounds": [
-      710,
-      545,
-      835,
-      650
-    ],
-    "description": "IA aplicada, analítica avanzada y experiencias de datos."
-  },
-  {
-    "id": "723",
-    "name": "Activaciones (Demo)",
-    "category": "AR/VR & Experience",
-    "zone": "Arriba",
-    "bounds": [
-      1185,
-      380,
-      1325,
-      510
-    ],
-    "description": "Zona de activaciones: experiencias inmersivas, demos y retos."
-  },
-  {
-    "id": "TALLER",
-    "name": "Taller",
-    "category": "Learning & Skills",
-    "zone": "Arriba derecha",
-    "bounds": [
-      1205,
-      170,
-      1505,
-      350
-    ],
-    "description": "Workshops, hands-on labs y certificaciones."
-  },
-  {
-    "id": "CONF",
-    "name": "Conferencias",
-    "category": "Conferences",
-    "zone": "Izquierda",
-    "bounds": [
-      390,
-      140,
-      645,
-      530
-    ],
-    "description": "Auditorio de conferencias y keynotes sobre industria 5.0."
-  }
-]
+  "stands": [
+    {
+      "id": "A01",
+      "name": "Expositor A01",
+      "category": "Cybersecurity OT",
+      "bounds": [
+        452.5,
+        390.79,
+        493.34,
+        490.75
+      ],
+      "token": "A01",
+      "video": "./assets/video/A01.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "A02",
+      "name": "Expositor A02",
+      "category": "Smart Supply Chain",
+      "bounds": [
+        503.54,
+        390.79,
+        544.38,
+        490.75
+      ],
+      "token": "A02",
+      "video": "./assets/video/A02.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "A03",
+      "name": "Expositor A03",
+      "category": "Sustainability & Energy",
+      "bounds": [
+        554.58,
+        390.79,
+        595.42,
+        490.75
+      ],
+      "token": "A03",
+      "video": "./assets/video/A03.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "A04",
+      "name": "Expositor A04",
+      "category": "Learning & Skills",
+      "bounds": [
+        605.62,
+        390.79,
+        646.46,
+        490.75
+      ],
+      "token": "A04",
+      "video": "./assets/video/A04.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "A05",
+      "name": "Expositor A05",
+      "category": "Smart Factory",
+      "bounds": [
+        656.66,
+        390.79,
+        697.5,
+        490.75
+      ],
+      "token": "A05",
+      "video": "./assets/video/A05.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "A06",
+      "name": "Expositor A06",
+      "category": "AI & Analytics",
+      "bounds": [
+        452.5,
+        533.59,
+        493.34,
+        633.55
+      ],
+      "token": "A06",
+      "video": "./assets/video/A06.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "A07",
+      "name": "Expositor A07",
+      "category": "Industrial IoT",
+      "bounds": [
+        503.54,
+        533.59,
+        544.38,
+        633.55
+      ],
+      "token": "A07",
+      "video": "./assets/video/A07.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "A08",
+      "name": "Expositor A08",
+      "category": "Robotics & Cobots",
+      "bounds": [
+        554.58,
+        533.59,
+        595.42,
+        633.55
+      ],
+      "token": "A08",
+      "video": "./assets/video/A08.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "A09",
+      "name": "Expositor A09",
+      "category": "Digital Twin",
+      "bounds": [
+        605.62,
+        533.59,
+        646.46,
+        633.55
+      ],
+      "token": "A09",
+      "video": "./assets/video/A09.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "A10",
+      "name": "Expositor A10",
+      "category": "AR/VR & Experience",
+      "bounds": [
+        656.66,
+        533.59,
+        697.5,
+        633.55
+      ],
+      "token": "A10",
+      "video": "./assets/video/A10.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "A11",
+      "name": "Expositor A11",
+      "category": "Cybersecurity OT",
+      "bounds": [
+        452.5,
+        676.39,
+        493.34,
+        776.35
+      ],
+      "token": "A11",
+      "video": "./assets/video/A11.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "A12",
+      "name": "Expositor A12",
+      "category": "Smart Supply Chain",
+      "bounds": [
+        503.54,
+        676.39,
+        544.38,
+        776.35
+      ],
+      "token": "A12",
+      "video": "./assets/video/A12.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "A13",
+      "name": "Expositor A13",
+      "category": "Sustainability & Energy",
+      "bounds": [
+        554.58,
+        676.39,
+        595.42,
+        776.35
+      ],
+      "token": "A13",
+      "video": "./assets/video/A13.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "A14",
+      "name": "Expositor A14",
+      "category": "Learning & Skills",
+      "bounds": [
+        605.62,
+        676.39,
+        646.46,
+        776.35
+      ],
+      "token": "A14",
+      "video": "./assets/video/A14.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "A15",
+      "name": "Expositor A15",
+      "category": "Smart Factory",
+      "bounds": [
+        656.66,
+        676.39,
+        697.5,
+        776.35
+      ],
+      "token": "A15",
+      "video": "./assets/video/A15.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B01",
+      "name": "Expositor B01",
+      "category": "Smart Supply Chain",
+      "bounds": [
+        780.18,
+        390.79,
+        816.78,
+        490.75
+      ],
+      "token": "B01",
+      "video": "./assets/video/B01.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B02",
+      "name": "Expositor B02",
+      "category": "Sustainability & Energy",
+      "bounds": [
+        825.94,
+        390.79,
+        862.54,
+        490.75
+      ],
+      "token": "B02",
+      "video": "./assets/video/B02.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B03",
+      "name": "Expositor B03",
+      "category": "Learning & Skills",
+      "bounds": [
+        871.7,
+        390.79,
+        908.3,
+        490.75
+      ],
+      "token": "B03",
+      "video": "./assets/video/B03.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B04",
+      "name": "Expositor B04",
+      "category": "Smart Factory",
+      "bounds": [
+        917.46,
+        390.79,
+        954.06,
+        490.75
+      ],
+      "token": "B04",
+      "video": "./assets/video/B04.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B05",
+      "name": "Expositor B05",
+      "category": "AI & Analytics",
+      "bounds": [
+        963.22,
+        390.79,
+        999.82,
+        490.75
+      ],
+      "token": "B05",
+      "video": "./assets/video/B05.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B06",
+      "name": "Expositor B06",
+      "category": "Industrial IoT",
+      "bounds": [
+        780.18,
+        533.59,
+        816.78,
+        633.55
+      ],
+      "token": "B06",
+      "video": "./assets/video/B06.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B07",
+      "name": "Expositor B07",
+      "category": "Robotics & Cobots",
+      "bounds": [
+        825.94,
+        533.59,
+        862.54,
+        633.55
+      ],
+      "token": "B07",
+      "video": "./assets/video/B07.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B08",
+      "name": "Expositor B08",
+      "category": "Digital Twin",
+      "bounds": [
+        871.7,
+        533.59,
+        908.3,
+        633.55
+      ],
+      "token": "B08",
+      "video": "./assets/video/B08.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B09",
+      "name": "Expositor B09",
+      "category": "AR/VR & Experience",
+      "bounds": [
+        917.46,
+        533.59,
+        954.06,
+        633.55
+      ],
+      "token": "B09",
+      "video": "./assets/video/B09.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B10",
+      "name": "Expositor B10",
+      "category": "Cybersecurity OT",
+      "bounds": [
+        963.22,
+        533.59,
+        999.82,
+        633.55
+      ],
+      "token": "B10",
+      "video": "./assets/video/B10.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B11",
+      "name": "Expositor B11",
+      "category": "Smart Supply Chain",
+      "bounds": [
+        780.18,
+        676.39,
+        816.78,
+        776.35
+      ],
+      "token": "B11",
+      "video": "./assets/video/B11.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B12",
+      "name": "Expositor B12",
+      "category": "Sustainability & Energy",
+      "bounds": [
+        825.94,
+        676.39,
+        862.54,
+        776.35
+      ],
+      "token": "B12",
+      "video": "./assets/video/B12.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B13",
+      "name": "Expositor B13",
+      "category": "Learning & Skills",
+      "bounds": [
+        871.7,
+        676.39,
+        908.3,
+        776.35
+      ],
+      "token": "B13",
+      "video": "./assets/video/B13.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B14",
+      "name": "Expositor B14",
+      "category": "Smart Factory",
+      "bounds": [
+        917.46,
+        676.39,
+        954.06,
+        776.35
+      ],
+      "token": "B14",
+      "video": "./assets/video/B14.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "B15",
+      "name": "Expositor B15",
+      "category": "AI & Analytics",
+      "bounds": [
+        963.22,
+        676.39,
+        999.82,
+        776.35
+      ],
+      "token": "B15",
+      "video": "./assets/video/B15.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C01",
+      "name": "Expositor C01",
+      "category": "Sustainability & Energy",
+      "bounds": [
+        1063.62,
+        390.79,
+        1097.42,
+        490.75
+      ],
+      "token": "C01",
+      "video": "./assets/video/C01.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C02",
+      "name": "Expositor C02",
+      "category": "Learning & Skills",
+      "bounds": [
+        1105.86,
+        390.79,
+        1139.66,
+        490.75
+      ],
+      "token": "C02",
+      "video": "./assets/video/C02.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C03",
+      "name": "Expositor C03",
+      "category": "Smart Factory",
+      "bounds": [
+        1148.1,
+        390.79,
+        1181.9,
+        490.75
+      ],
+      "token": "C03",
+      "video": "./assets/video/C03.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C04",
+      "name": "Expositor C04",
+      "category": "AI & Analytics",
+      "bounds": [
+        1190.34,
+        390.79,
+        1224.14,
+        490.75
+      ],
+      "token": "C04",
+      "video": "./assets/video/C04.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C05",
+      "name": "Expositor C05",
+      "category": "Industrial IoT",
+      "bounds": [
+        1232.58,
+        390.79,
+        1266.38,
+        490.75
+      ],
+      "token": "C05",
+      "video": "./assets/video/C05.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C06",
+      "name": "Expositor C06",
+      "category": "Robotics & Cobots",
+      "bounds": [
+        1063.62,
+        533.59,
+        1097.42,
+        633.55
+      ],
+      "token": "C06",
+      "video": "./assets/video/C06.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C07",
+      "name": "Expositor C07",
+      "category": "Digital Twin",
+      "bounds": [
+        1105.86,
+        533.59,
+        1139.66,
+        633.55
+      ],
+      "token": "C07",
+      "video": "./assets/video/C07.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C08",
+      "name": "Expositor C08",
+      "category": "AR/VR & Experience",
+      "bounds": [
+        1148.1,
+        533.59,
+        1181.9,
+        633.55
+      ],
+      "token": "C08",
+      "video": "./assets/video/C08.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C09",
+      "name": "Expositor C09",
+      "category": "Cybersecurity OT",
+      "bounds": [
+        1190.34,
+        533.59,
+        1224.14,
+        633.55
+      ],
+      "token": "C09",
+      "video": "./assets/video/C09.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C10",
+      "name": "Expositor C10",
+      "category": "Smart Supply Chain",
+      "bounds": [
+        1232.58,
+        533.59,
+        1266.38,
+        633.55
+      ],
+      "token": "C10",
+      "video": "./assets/video/C10.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C11",
+      "name": "Expositor C11",
+      "category": "Sustainability & Energy",
+      "bounds": [
+        1063.62,
+        676.39,
+        1097.42,
+        776.35
+      ],
+      "token": "C11",
+      "video": "./assets/video/C11.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C12",
+      "name": "Expositor C12",
+      "category": "Learning & Skills",
+      "bounds": [
+        1105.86,
+        676.39,
+        1139.66,
+        776.35
+      ],
+      "token": "C12",
+      "video": "./assets/video/C12.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C13",
+      "name": "Expositor C13",
+      "category": "Smart Factory",
+      "bounds": [
+        1148.1,
+        676.39,
+        1181.9,
+        776.35
+      ],
+      "token": "C13",
+      "video": "./assets/video/C13.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C14",
+      "name": "Expositor C14",
+      "category": "AI & Analytics",
+      "bounds": [
+        1190.34,
+        676.39,
+        1224.14,
+        776.35
+      ],
+      "token": "C14",
+      "video": "./assets/video/C14.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "C15",
+      "name": "Expositor C15",
+      "category": "Industrial IoT",
+      "bounds": [
+        1232.58,
+        676.39,
+        1266.38,
+        776.35
+      ],
+      "token": "C15",
+      "video": "./assets/video/C15.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D01",
+      "name": "Expositor D01",
+      "category": "Learning & Skills",
+      "bounds": [
+        1316.3,
+        390.79,
+        1345.86,
+        490.75
+      ],
+      "token": "D01",
+      "video": "./assets/video/D01.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D02",
+      "name": "Expositor D02",
+      "category": "Smart Factory",
+      "bounds": [
+        1353.26,
+        390.79,
+        1382.82,
+        490.75
+      ],
+      "token": "D02",
+      "video": "./assets/video/D02.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D03",
+      "name": "Expositor D03",
+      "category": "AI & Analytics",
+      "bounds": [
+        1390.22,
+        390.79,
+        1419.78,
+        490.75
+      ],
+      "token": "D03",
+      "video": "./assets/video/D03.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D04",
+      "name": "Expositor D04",
+      "category": "Industrial IoT",
+      "bounds": [
+        1427.18,
+        390.79,
+        1456.74,
+        490.75
+      ],
+      "token": "D04",
+      "video": "./assets/video/D04.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D05",
+      "name": "Expositor D05",
+      "category": "Robotics & Cobots",
+      "bounds": [
+        1464.14,
+        390.79,
+        1493.7,
+        490.75
+      ],
+      "token": "D05",
+      "video": "./assets/video/D05.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D06",
+      "name": "Expositor D06",
+      "category": "Digital Twin",
+      "bounds": [
+        1316.3,
+        533.59,
+        1345.86,
+        633.55
+      ],
+      "token": "D06",
+      "video": "./assets/video/D06.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D07",
+      "name": "Expositor D07",
+      "category": "AR/VR & Experience",
+      "bounds": [
+        1353.26,
+        533.59,
+        1382.82,
+        633.55
+      ],
+      "token": "D07",
+      "video": "./assets/video/D07.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D08",
+      "name": "Expositor D08",
+      "category": "Cybersecurity OT",
+      "bounds": [
+        1390.22,
+        533.59,
+        1419.78,
+        633.55
+      ],
+      "token": "D08",
+      "video": "./assets/video/D08.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D09",
+      "name": "Expositor D09",
+      "category": "Smart Supply Chain",
+      "bounds": [
+        1427.18,
+        533.59,
+        1456.74,
+        633.55
+      ],
+      "token": "D09",
+      "video": "./assets/video/D09.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D10",
+      "name": "Expositor D10",
+      "category": "Sustainability & Energy",
+      "bounds": [
+        1464.14,
+        533.59,
+        1493.7,
+        633.55
+      ],
+      "token": "D10",
+      "video": "./assets/video/D10.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D11",
+      "name": "Expositor D11",
+      "category": "Learning & Skills",
+      "bounds": [
+        1316.3,
+        676.39,
+        1345.86,
+        776.35
+      ],
+      "token": "D11",
+      "video": "./assets/video/D11.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D12",
+      "name": "Expositor D12",
+      "category": "Smart Factory",
+      "bounds": [
+        1353.26,
+        676.39,
+        1382.82,
+        776.35
+      ],
+      "token": "D12",
+      "video": "./assets/video/D12.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D13",
+      "name": "Expositor D13",
+      "category": "AI & Analytics",
+      "bounds": [
+        1390.22,
+        676.39,
+        1419.78,
+        776.35
+      ],
+      "token": "D13",
+      "video": "./assets/video/D13.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D14",
+      "name": "Expositor D14",
+      "category": "Industrial IoT",
+      "bounds": [
+        1427.18,
+        676.39,
+        1456.74,
+        776.35
+      ],
+      "token": "D14",
+      "video": "./assets/video/D14.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    },
+    {
+      "id": "D15",
+      "name": "Expositor D15",
+      "category": "Robotics & Cobots",
+      "bounds": [
+        1464.14,
+        676.39,
+        1493.7,
+        776.35
+      ],
+      "token": "D15",
+      "video": "./assets/video/D15.mp4",
+      "videoFallback": "./assets/video/demo.mp4"
+    }
+  ]
+}

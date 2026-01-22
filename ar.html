@@ -10,107 +10,226 @@
 
   <style>
     html,body{ margin:0; height:100%; background:#000; font-family: system-ui, -apple-system, Segoe UI, Roboto; }
-    .ui{ position:fixed; left:12px; right:12px; top:12px; display:flex; gap:10px; flex-wrap:wrap;
-         z-index:9999; align-items:flex-start; justify-content:space-between; pointer-events:none; }
-    .card{ pointer-events:auto; max-width:520px; background: rgba(10,12,20,.62); color: rgba(255,255,255,.92);
-           border:1px solid rgba(255,255,255,.16); border-radius:16px; padding:10px 12px; backdrop-filter: blur(10px); }
+
+    .hud{
+      position:fixed; left:12px; right:12px; top:12px;
+      z-index:9999; pointer-events:none;
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .card{
+      pointer-events:auto;
+      width:min(560px,100%);
+      background: rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.22);
+      border-radius: 18px;
+      padding: 12px;
+      backdrop-filter: blur(14px);
+      color: rgba(255,255,255,.92);
+    }
+    .t{ font-weight:900; font-size:14px; }
+    .m{ font-size:12px; color: rgba(255,255,255,.70); margin-top:6px; line-height:1.35; }
     .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
-    .btn{ pointer-events:auto; cursor:pointer; padding:10px 12px; border-radius:14px;
-          border:1px solid rgba(94,231,255,.35); background: rgba(94,231,255,.14); color:#fff; text-decoration:none;
-          display:inline-flex; align-items:center; justify-content:center; gap:8px; font-size:13px; user-select:none; }
-    .btn.ghost{ border:1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); }
-    .muted{ color: rgba(255,255,255,.65); font-size:12px; margin-top:4px; line-height:1.35; }
-    .tap{ position:fixed; inset:0; display:grid; place-items:center; background: rgba(0,0,0,.55); z-index:9998; }
-    .tap .box{ width:min(520px, calc(100% - 28px)); border-radius:18px; border:1px solid rgba(255,255,255,.18);
-               background: rgba(10,12,20,.82); color: rgba(255,255,255,.92); padding:14px; text-align:center;
-               backdrop-filter: blur(10px); }
-    @media (max-width:520px){ .ui{ left:10px; right:10px; top:10px; } .card{ max-width:none; width:100%; } }
+    .btn{
+      pointer-events:auto;
+      padding:10px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.12);
+      color:#fff;
+      text-decoration:none;
+      cursor:pointer;
+      font-size:12px;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+    .btn.gold{ border-color: rgba(246,197,74,.55); background: rgba(246,197,74,.20); }
+    .btn.green{ border-color: rgba(18,199,122,.55); background: rgba(18,199,122,.20); }
+
+    .gate{
+      position:fixed; inset:0;
+      display:grid; place-items:center;
+      background: rgba(0,0,0,.68);
+      z-index:9998;
+    }
+    .box{
+      width:min(560px, calc(100% - 26px));
+      background: rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.22);
+      border-radius: 20px;
+      padding: 14px;
+      backdrop-filter: blur(14px);
+      color: rgba(255,255,255,.92);
+      text-align:center;
+    }
+    .warn{
+      margin-top:10px;
+      text-align:left;
+      padding:10px;
+      border-radius: 16px;
+      border:1px solid rgba(255,184,74,.35);
+      background: rgba(255,184,74,.10);
+      font-size:12px;
+      color: rgba(255,255,255,.88);
+      display:none;
+    }
+    code{ color:#fff; }
   </style>
 </head>
 
 <body>
-  <div class="ui">
+
+  <div class="hud">
     <div class="card">
-      <div style="font-weight:900;font-size:14px">AR • Expo IA & Industria 5.0</div>
-      <div class="muted">
+      <div class="t" id="title">AR • Expo IA & Industria 5.0</div>
+      <div class="m">
         1) Toca <b>Iniciar</b><br/>
-        2) Apunta la cámara a <b>expo_target.jpg</b><br/>
-        3) Verás el video sobre el target
+        2) Apunta al <b>target</b><br/>
+        3) Se mostrará tu video encima del target
       </div>
       <div class="row">
-        <a class="btn ghost" id="fallback" href="./s.html?token=demo">Ver contenido sin AR</a>
-        <a class="btn ghost" href="./index.html">Volver al mapa</a>
+        <a class="btn" href="./index.html">← Mapa</a>
+        <a class="btn" id="contentBtn" href="./s.html?token=demo">Contenido</a>
       </div>
     </div>
   </div>
 
-  <div class="tap" id="tapLayer">
+  <div class="gate" id="gate">
     <div class="box">
-      <div style="font-weight:900;font-size:16px">Iniciar AR</div>
-      <div class="muted" style="margin-top:8px">
-        En móviles el video necesita un tap para iniciar (políticas de autoplay).
+      <div style="font-weight:900;font-size:16px">Iniciar Realidad Aumentada</div>
+      <div class="m" style="margin-top:8px">
+        En móviles el video requiere un toque para reproducirse.
       </div>
       <div class="row" style="justify-content:center; margin-top:12px">
-        <button class="btn" id="startBtn">Iniciar</button>
-        <a class="btn ghost" href="./index.html">Cancelar</a>
+        <button class="btn green" id="startBtn">Iniciar</button>
+        <a class="btn" href="./index.html">Cancelar</a>
+      </div>
+
+      <div class="warn" id="warn">
+        <b>AR no puede iniciar</b><br/><br/>
+        Verifica:<br/>
+        1) Existe <code>assets/targets/expo_target.mind</code><br/>
+        2) Existe <code>assets/video/demo.mp4</code><br/>
+        3) Estás abriendo por <b>http/https</b> (no file://)<br/>
+        4) En iPhone: la página debe estar en <b>https</b> para cámara
       </div>
     </div>
   </div>
 
   <a-scene
+    id="scene"
     mindar-image="imageTargetSrc: ./assets/targets/expo_target.mind; autoStart: false;"
-    color-space="sRGB"
     renderer="colorManagement: true, physicallyCorrectLights: true"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: true">
 
     <a-assets>
-      <video id="standVideo"
-             src="./assets/video/demo.mp4"
-             preload="auto"
-             loop
-             muted
-             playsinline
-             webkit-playsinline
-             crossorigin="anonymous"></video>
+      <video id="v"
+        src="./assets/video/demo.mp4"
+        preload="auto"
+        loop
+        muted
+        playsinline
+        webkit-playsinline
+        crossorigin="anonymous"></video>
     </a-assets>
 
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
 
     <a-entity mindar-image-target="targetIndex: 0">
       <a-plane position="0 0 0"
-               width="1.35" height="0.76"
-               material="shader: flat; src: #standVideo; transparent: true; opacity: 1"></a-plane>
+        width="1.45" height="0.82"
+        material="shader: flat; src: #v; transparent: true; opacity: 1"></a-plane>
 
       <a-plane position="0 0 -0.01"
-               width="1.43" height="0.84"
-               color="#2dd4bf" opacity="0.15"></a-plane>
+        width="1.55" height="0.92"
+        color="#f6c54a" opacity="0.14"></a-plane>
 
-      <a-text value="Demo Stand — Video"
-              position="-0.65 0.48 0.01"
-              width="2.4"
-              color="#FFFFFF"></a-text>
+      <a-text value="Expo IA & Industria 5.0"
+        position="-0.72 0.55 0.01"
+        width="2.4"
+        color="#ffffff"></a-text>
     </a-entity>
   </a-scene>
 
   <script>
-    const params = new URLSearchParams(location.search);
-    const token = params.get('token') || 'demo';
-    document.getElementById('fallback').href = './s.html?token=' + encodeURIComponent(token);
+    (function(){
+      const params = new URLSearchParams(location.search);
+      const token = params.get("token") || "demo";
 
-    const scene = document.querySelector('a-scene');
-    const mindar = scene.components['mindar-image'];
-    const tapLayer = document.getElementById('tapLayer');
-    const startBtn = document.getElementById('startBtn');
-    const vid = document.getElementById('standVideo');
+      const title = document.getElementById("title");
+      const contentBtn = document.getElementById("contentBtn");
+      const startBtn = document.getElementById("startBtn");
+      const gate = document.getElementById("gate");
+      const warn = document.getElementById("warn");
 
-    async function startAR(){
-      tapLayer.style.display = 'none';
-      await mindar.start();
-      try { await vid.play(); } catch (e) { console.warn('Video play blocked:', e); }
-      scene.addEventListener('targetFound', async () => { try { await vid.play(); } catch(e){} });
-    }
-    startBtn.addEventListener('click', startAR);
+      title.textContent = `AR • Stand ${token}`;
+      contentBtn.href = `./s.html?token=${encodeURIComponent(token)}`;
+
+      const sceneEl = document.getElementById("scene");
+      const vid = document.getElementById("v");
+
+      const tokenVideo = `./assets/video/${token}.mp4`;
+
+      async function exists(url){
+        try{
+          const r = await fetch(url, { method:"HEAD" });
+          return r.ok;
+        }catch(e){ return false; }
+      }
+
+      function sceneReady(){
+        return new Promise(resolve => {
+          if (sceneEl.hasLoaded) return resolve();
+          sceneEl.addEventListener("loaded", () => resolve(), { once:true });
+        });
+      }
+
+      async function startAR(){
+        warn.style.display = "none";
+
+        try{
+          await sceneReady();
+
+          // Obtener system (FORMA CORRECTA)
+          const mindarSystem = sceneEl.systems && sceneEl.systems["mindar-image-system"];
+          if(!mindarSystem){
+            throw new Error("mindar-image-system no disponible (scene no inicializada)");
+          }
+
+          // Elegir video por stand si existe
+          if(token !== "demo" && await exists(tokenVideo)){
+            vid.src = tokenVideo;
+          }else{
+            vid.src = "./assets/video/demo.mp4";
+          }
+
+          // Oculta gate
+          gate.style.display = "none";
+
+          // Inicia MindAR
+          await mindarSystem.start();
+
+          // Intento de play (muted)
+          try { await vid.play(); } catch(e){}
+
+          // Cuando detecte el target, reintenta play
+          sceneEl.addEventListener("targetFound", async () => {
+            try { await vid.play(); } catch(e){}
+          });
+
+        }catch(e){
+          console.error(e);
+          warn.style.display = "block";
+          gate.style.display = "grid";
+        }
+      }
+
+      startBtn.addEventListener("click", startAR);
+    })();
   </script>
+
 </body>
 </html>
